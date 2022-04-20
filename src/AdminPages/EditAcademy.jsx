@@ -41,6 +41,15 @@ function EditAcademy(value1) {
     console.log("ins_id inside useeffecet:" + ins_id);
     getInstitute(ins_id);
   }, []);
+  // function setallstates(){
+  //   setName(datas.instituteName),
+  //   setIns_des(datas.instituteDescription),
+  //   setState(datas.instituteState),
+  //   setCity(datas.instituteCity),
+  //   setEmail(datas.instituteEmail),
+  //   setMobile(datas.instituteMobile),
+  //   setNirf(datas.nirfRank),
+  // }
 
   function getInstitute(ins_id) {
     console.log("ins_id inside getintitute :" + ins_id);
@@ -53,27 +62,25 @@ function EditAcademy(value1) {
   }
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    const user = {
-      name,
-      ins_des,
-      state,
-      city,
-      email,
-      mobileNumber,
-      nirf,
-    };
-    console.log(user);
-    if (name && ins_des && state && city && email && mobileNumber && nirf) {
-      fetch(value1.value1 + `admin/editInstitute/${in_id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-      }).then(() => {
-        window.location.href = "/admin/ViewInstitute";
-      });
-    } else {
-      alert("No empty filled allowed");
-    }
+    // const user = {
+    //   name,
+    //   ins_des,
+    //   state,
+    //   city,
+    //   email,
+    //   mobileNumber,
+    //   nirf,
+    // };
+    // console.log(user);
+    console.log(data[0]);
+
+    fetch(value1.value1 + "admin/editInstitute/" + in_id, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      body: JSON.stringify(data[0]),
+    }).then(() => {
+      window.location.href = "/admin/ViewInstitute";
+    });
   };
 
   return (
@@ -97,7 +104,21 @@ function EditAcademy(value1) {
               //   }
               //   setName(value);
               // }}
+              // onLoad={setName(datas.instituteName)}
               onChange={(e) => {
+                var name = e.target.name;
+                var value = e.target.value;
+                console.log(data);
+                setData((prev) => {
+                  console.log("prev contains");
+                  console.log(prev[0]);
+                  var tempobj = prev[0];
+                  console.log(tempobj.instituteName);
+                  tempobj.instituteName = value;
+                  // var newobj = { ...prev, instituteName: "abc" };
+                  console.log(tempobj);
+                  return [tempobj];
+                });
                 setName(e.target.value);
               }}
               placeholder="Enter Academy name"
@@ -110,8 +131,16 @@ function EditAcademy(value1) {
               defaultValue={datas.instituteMobile}
               onChange={(e) => {
                 var num = /[^0-9]/gi;
-                let value = e.target.value.replace(num, "");
-                setMobile(value);
+                var value = e.target.value.replace(num, "");
+                // value = e.target.value;
+
+                setData((prev) => {
+                  var tempobj = prev[0];
+                  tempobj.instituteMobile = value;
+                  return [tempobj];
+                });
+
+                //setMobile(value);
               }}
               className="row1"
               placeholder="Enter the contact number"
@@ -132,7 +161,18 @@ function EditAcademy(value1) {
               //   setCity(value);
               // }}
               onChange={(e) => {
-                setCity(e.target.value);
+                var letter = /^[a-zA-Z]*$/;
+                let value = e.target.value;
+
+                if (!e.target.value.match(letter)) {
+                  value = "";
+                }
+                setData((prev) => {
+                  var tempobj = prev[0];
+                  tempobj.instituteCity = value;
+                  return [tempobj];
+                });
+                //setCity(e.target.value);
               }}
               placeholder="Enter Insititute City"
               id="imageUrl"
@@ -151,7 +191,13 @@ function EditAcademy(value1) {
               //   setEmail(value);
               // }}
               onChange={(e) => {
-                setEmail(e.target.value);
+                let value = e.target.value;
+                setData((prev) => {
+                  var tempobj = prev[0];
+                  tempobj.instituteEmail = value;
+                  return [tempobj];
+                });
+                //setEmail(e.target.value);
               }}
               className="row1"
               placeholder="Enter the academy email"
@@ -172,7 +218,17 @@ function EditAcademy(value1) {
               //   setState(value);
               // }}
               onChange={(e) => {
-                setState(e.target.value);
+                // var letter = /^[a-zA-Z]*$/;
+                let value = e.target.value;
+                // if (!e.target.value.match(letter)) {
+                //   value = "";
+                // }
+                setData((prev) => {
+                  var tempobj = prev[0];
+                  tempobj.instituteState = value;
+                  return [tempobj];
+                });
+                //setState(e.target.value);
               }}
               placeholder="Enter academy State"
               id="academyLocation"
@@ -185,17 +241,41 @@ function EditAcademy(value1) {
               placeholder="Enter academy description"
               id="academyDescription"
               onChange={(e) => {
-                setIns_des(e.target.value);
+                // var letter = /^[a-zA-Z]*$/;
+                let value = e.target.value;
+
+                // if (!e.target.value.match(letter)) {
+                //   value = "";
+                // }
+                setData((prev) => {
+                  var tempobj = prev[0];
+                  tempobj.instituteDescription = value;
+                  return [tempobj];
+                });
+                //setIns_des(e.target.value);
               }}
             ></textarea>
             <input
               required
               type="text"
               defaultValue={datas.nirfRank}
+              // onChange={(e) => {
+              //   var num = /[^0-9]/gi;
+              //   let value = e.target.value.replace(num, "");
+              //   setNirf(value);
+              // }}
               onChange={(e) => {
                 var num = /[^0-9]/gi;
-                let value = e.target.value.replace(num, "");
-                setNirf(value);
+                var value = e.target.value.replace(num, "");
+                // value = e.target.value;
+
+                setData((prev) => {
+                  var tempobj = prev[0];
+                  tempobj.nirfRank = value;
+                  return [tempobj];
+                });
+
+                //setMobile(value);
               }}
               className="row1"
               placeholder="Enter nirf rank"
